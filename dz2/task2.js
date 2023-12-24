@@ -7,6 +7,7 @@
 
 // При добавлении отзыва, он должен отображаться на странице под предыдущими отзывами, а не заменять их.
 
+const parent = document.getElementById("main");
 const initialData = [
     {
         product: "Apple iPhone 13",
@@ -40,3 +41,33 @@ const initialData = [
         ],
     },
 ];
+
+function createProduct(element) {
+    const div = document.createElement("div");
+    div.classList.add("product");
+
+    const h = document.createElement('h2');
+    h.innerText = element.product;
+
+    const ul = document.createElement('ul');
+    for (const item of element.reviews) {
+        const li = document.createElement('li');
+        li.innerText = item.text;
+        ul.appendChild(li);
+    }
+
+    const input = document.createElement('input');
+    input.type = "text";
+
+    const btn = document.createElement("button");
+    btn.innerText = `Добавить отзыв`;
+    div.appendChild(h);
+    div.appendChild(ul);
+    div.appendChild(input)
+    div.appendChild(btn);
+    parent.appendChild(div);
+}
+
+for (const i of initialData) {
+    createProduct(i)
+}
