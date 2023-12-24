@@ -21,18 +21,27 @@ class Library {
     }
 
     addBook(title) {
-        if (this.#books.includes(title)) {
-            throw new Error('Книга с таким названием уже существует в списке')
+        if (this.hasBook(title)) {
+            throw new Error('Книга с таким названием уже существует в списке');
         }
         this.#books.push(title);
     }
 
     removeBook(title) {
-
+        if (this.hasBook(title)) {
+            let index = this.#books.indexOf(title);
+            this.#books.splice(index, 1);
+        }
+        else throw new Error('Книга с таким названием не найдена в списке');
     }
 
     hasBook(title) {
-
+        let availabilityBook = (this.#books.includes(title));
+        return availabilityBook;
+        // if (this.#books.includes(title)) {
+        //     return true;
+        // }
+        // else return false;
     }
 
     constructor(listOfBooks) {
@@ -46,6 +55,18 @@ class Library {
 }
 
 let library = new Library(['репка', 'три поросенка']);
-library.addBook('русалочка');
-library.addBook('репка');
 console.log(library.allBooks);
+
+//Добавлять книгу в список
+library.addBook('русалочка');
+console.log(library.allBooks);
+
+// library.addBook('репка');
+// console.log(library.allBooks);
+
+//Удалить книгу из списка по названию
+library.removeBook('репка');
+console.log(library.allBooks);
+
+// Проверить наличие книги в библиотеке
+// console.log(library.hasBook('рeпка'));
