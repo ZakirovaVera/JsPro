@@ -46,16 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
             productReviews.reviews.push(textInput.value);
 
             localStorage.setItem(keyStorageProductReviews, JSON.stringify(initialData));
-
-            // const user = {
-            //     productname: productnameInput.value,
-            //     text: textInput.value
-            // }
-
-            // Сохраняем значения наименование продукта и отзыв пользователя
-            // localStorage.setItem('productname', productnameInput.value);
-            // localStorage.setItem('text', textInput.value);
-            // window.location.href = "view.html"; // переходим на страницу wiew
         });
     }
     function fetchReviews() {
@@ -80,9 +70,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(reviews => {
                     reviews.forEach(article => {
                         const articleDiv = document.createElement('div');
-                        articleDiv.innerHTML = `<h3>${article.product}</h3>`;
-                        articleDiv.innerHTML += `<button class="loadReviexs-button">Загрузить отзывы о товаре</button>`
-                        // article.reviews.forEach(e => articleDiv.innerHTML += '<p>' + e + '</p>')
+                        articleDiv.classList.add("revWrapp");
+                        const btn = document.createElement("button");
+                        btn.classList.add('click-product')
+                        btn.addEventListener('click', () => {
+                            article.reviews.forEach(e => 
+                                {
+                                const p = document.createElement("p");
+                                p.classList.add('product__p');
+                                p.innerText = e;
+                                articleDiv.appendChild(p);
+
+                                const btnDel = document.createElement("button");
+                                btnDel.classList.add('btn__Del');
+                                btnDel.innerText = 'Delete';
+                                articleDiv.appendChild(btnDel);
+                            })
+
+                            // articleDiv.innerHTML += '<p class="product__p">' + e + '</p>' + '<button class="btn__Del">Удалить</button>')
+                            // btn.disabled = 'disabled'
+                        });
+                        btn.innerText = article.product;
+                        articleDiv.appendChild(btn);
                         reviewContainer.appendChild(articleDiv);
                     });
                 })
@@ -92,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     reviewContainer.appendChild(errorDiv);
                 })
                 .finally(() => {
-                    loadBtn.disabled = false;
+                    loadBtn.disabled = 'disabled';
                 });
         });
     }

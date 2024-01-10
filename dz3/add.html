@@ -82,17 +82,33 @@
         .welcome {
             text-align: center;
         }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #d1d1d1;
+            border-radius: 4px;
+            font-size: 16px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2>Добавить отзыв о товаре</h2>
+            <h2>Товар</h2>
+            <label>
+                <select id="table-color" class="productname-input">
+                    <option value="Apple iPhone 13">Apple iPhone 13</option>
+                    <option value="Sony PlayStation 5">Sony PlayStation 5</option>
+                </select>
+            </label>
 
-        <input type="text" class="productname-input" placeholder="Название продукта">
+        <!-- <input type="text" class="productname-input" placeholder="Название продукта"> -->
         <textarea class="text-input" placeholder="Текст отзыва"></textarea>
         <button class="add-btn">Добавить отзыв</button>
         <p class="error-message"></p>
+    
+        
     </div>
 
     
