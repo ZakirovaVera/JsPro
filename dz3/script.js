@@ -21,8 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return JSON.parse(jsonStorage);
         }
     }
-    // let initialData = [{ productname: "Продукт 1", text: "Содержимое отзыва 1..." },
-    // { productname: "Продукт 2", text: "Содержимое отзыва 2..." },]
+   
     let initialData = initData();
 
     const createProduct = (productname) => {
@@ -31,8 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
             reviews: [],
         }
     }
-
-
 
     if (addBtn) {
         addBtn.addEventListener('click', () => {
@@ -105,5 +102,4 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         });
     }
-
 });
