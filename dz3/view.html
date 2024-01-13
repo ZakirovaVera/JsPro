@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIEW</title>
     <!-- <script src="script.js"></script> -->
-    
+
     <style>
         * {
             box-sizing: border-box;
@@ -23,6 +23,14 @@
         .click-product {
             margin: 10px 0;
         }
+
+        .hidden {
+            display: none;
+        }
+
+        .show {
+            display: block !important;
+        }
     </style>
 </head>
 
@@ -34,18 +42,10 @@
         <button class="load-button">Загрузить товары с отзывами</button>
         <p class="error-message"></p>
 
-        <div class="container"></div>
-        <!-- <div class="product">
-            <button class="click-product"></button>
-            <div class="revWrapp">
-                <p class="product-review"></p>
-                <button class="product-review__delete"></button>
-            </div>
-        </div> -->
-
+        <div class="container-product"></div>
     </div>
 
-<script src="test.js" defer></script>
+    <script src="test.js" defer></script>
 </body>
 
 </html>
