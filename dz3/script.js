@@ -1,105 +1,95 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const errorMessage = document.querySelector('.error-message');
+
+    const initialJSON = `[
+        {"product":"Apple iPhone 13", "id": 1,"reviews":[{"id":"1","text":"отличный"}]}]`;
+
+    const keyStorageProductReviews = "productReviews";
+    let initialData = localStorage.getItem(keyStorageProductReviews);
+
+    if (!initialData) {
+        localStorage.setItem(keyStorageProductReviews, initialJSON);
+    }
+
+    const reviews = JSON.parse(localStorage.getItem(keyStorageProductReviews));
+
+    const reviewHtml = reviews.map((review) => getReviewHtml(review)).join('');
+
+
+
+    const addBtnElement = document.querySelector('.add-btn');
     const productnameInput = document.querySelector('.productname-input');
     const textInput = document.querySelector('.text-input');
-    const reviewContainer = document.querySelector('.review-container');
 
+    // при клике сохраняются в localStorage введенные данные.
+    if (addBtnElement) {
+        addBtnElement.addEventListener("click", function () {
 
+            const productName = productnameInput.value;
+            const textrev = textInput.value;
 
-    const addBtn = document.querySelector('.add-btn');
-    const keyStorageProductReviews = "productReviews";
-    const createStorageReviews = () => {
-        return [];
-    }
-    const initData = () => {
-        const jsonStorage = localStorage.getItem(keyStorageProductReviews);
+            const review = {
+                product: productName,
+                id: Date.now(),
+                reviews: [
+                    {
+                        id: Date.now(),
+                        text: textrev,
+                    }
+                ]
+            };
 
-        if (jsonStorage == null) {
-            return createStorageReviews();
-        }
-        else {
-            return JSON.parse(jsonStorage);
-        }
-    }
-   
-    let initialData = initData();
+            reviews.push(review);
+            localStorage.setItem(keyStorageProductReviews, JSON.stringify(reviews));
 
-    const createProduct = (productname) => {
-        return {
-            product: productname,
-            reviews: [],
-        }
+        })
     }
 
-    if (addBtn) {
-        addBtn.addEventListener('click', () => {
-            let productReviews = initialData.find(item => item.product === productnameInput.value);
+    const conteinerProductElement = document.querySelector(".container-product")
+    const loadBtnElement = document.querySelector('.load-button');
 
-            if (productReviews == null) {
-                productReviews = createProduct(productnameInput.value);
-                initialData.push(productReviews);
-            }
-
-            productReviews.reviews.push(textInput.value);
-
-            localStorage.setItem(keyStorageProductReviews, JSON.stringify(initialData));
-        });
-    }
-    function fetchReviews() {
-        return new Promise((resolve, reject) => {
-            // Имитация задержки сети
-            setTimeout(() => {
-                if (initialData.length < 1) {
-                    reject("Ошибка при загрузке отзывов");
-                } else {
-                    resolve(initialData);
-                }
-            }, 1000);
+    if (loadBtnElement) {
+        loadBtnElement.addEventListener('click', function () {
+            conteinerProductElement.innerHTML = reviewHtml;
         });
     }
 
-    const loadBtn = document.querySelector('.load-button');
-    if (loadBtn) {
-        loadBtn.addEventListener('click', () => {
-            loadBtn.disabled = true;
 
-            fetchReviews()
-                .then(reviews => {
-                    reviews.forEach(article => {
-                        const articleDiv = document.createElement('div');
-                        articleDiv.classList.add("revWrapp");
-                        const btn = document.createElement("button");
-                        btn.classList.add('click-product')
-                        btn.addEventListener('click', () => {
-                            article.reviews.forEach(e => 
-                                {
-                                const p = document.createElement("p");
-                                p.classList.add('product__p');
-                                p.innerText = e;
-                                articleDiv.appendChild(p);
+    // const btnProductElement = document.querySelector('.btn-product');
 
-                                const btnDel = document.createElement("button");
-                                btnDel.classList.add('btn__Del');
-                                btnDel.innerText = 'Delete';
-                                articleDiv.appendChild(btnDel);
-                            })
+    if(conteinerProductElement)
+    {conteinerProductElement.addEventListener("click", function (event) {
 
-                            // articleDiv.innerHTML += '<p class="product__p">' + e + '</p>' + '<button class="btn__Del">Удалить</button>')
-                            // btn.disabled = 'disabled'
-                        });
-                        btn.innerText = article.product;
-                        articleDiv.appendChild(btn);
-                        reviewContainer.appendChild(articleDiv);
-                    });
-                })
-                .catch(error => {
-                    const errorDiv = document.createElement('div');
-                    errorDiv.textContent = error;
-                    reviewContainer.appendChild(errorDiv);
-                })
-                .finally(() => {
-                    loadBtn.disabled = 'disabled';
-                });
-        });
+        if (event.target.classList.contains("btn-product")) {
+            const containerProduct = event.target.parentNode;
+            const el = containerProduct.querySelector("#welcomeDiv");
+            el?.classList.toggle('hidden');
+            return;
+        }
+
+        if (event.target.classList.contains("product-review__delete")) {
+            const reWrappElement = event.target.closest('.product');
+            const productId = event.target.getAttribute("product-id");
+
+            const indexProduct = reviews.findIndex(x => x.id == productId);
+            reviews.splice(indexProduct, 1);
+            localStorage.setItem(keyStorageProductReviews, JSON.stringify(reviews));
+
+            reWrappElement.remove();
+            return;
+        }
+    }
+    )}
+
+    function getReviewHtml(rev) {
+        let id = rev.reviews?.map((item) => item.id);
+        let text = rev.reviews?.map((item) => item.text);
+
+        return `<div class="product">
+        <button class="btn-product">${rev.product}</button>
+        <div class="revWrapp hidden" id="welcomeDiv" >
+            <p class="product-review" data-id="${id}">${text}</p>
+            <button class="product-review__delete" product-id="${rev.id}" review-id="${id}">Delete</button>
+        </div>
+    </div>`;
     }
 });
