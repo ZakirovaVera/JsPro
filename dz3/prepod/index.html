@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Отзывы о продуктах</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #addReviewSection,
+        #reviewsSection {
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        #productNameInput,
+        #reviewInput {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        #reviewInput {
+            height: 100px;
+        }
+
+        .review {
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="addReviewSection">
+        <input type="text" id="productNameInput" placeholder="Название продукта">
+        <textarea id="reviewInput" placeholder="Ваш отзыв"></textarea>
+        <button id="addReviewButton">Добавить отзыв</button>
+    </div>
+
+    <div id="reviewsSection">
+        <h2>Отзывы о продуктах</h2>
+        <div id="productsList"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
